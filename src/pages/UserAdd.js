@@ -1,109 +1,43 @@
 import React from 'react';
+import formProvider from '../utils/formProvider';
+import FormItem from '../components/FormItem';
 
 class UserAdd extends React.Component{
 
-	constructor(){
-		super();
-		this.state = {
-			form:{
-				name:{
-					value:'',
-					valid:false,
-					errorTips:'',
-				},
-				age:{
-					value:'',
-					valid:false,
-					errorTips:'',
-				},
-				gender:{
-					value:'',
-					valid:false,
-					errorTips:'',
-				}
-			}
-		}
-	}
-
-	handleValueChange(field,value,type="string"){
-		if(type == "number"){
-			value += value;
-		}
-		const {form} = this.state;
-
-		const newFieldObj = {value,valid:true,errorTips:''};
-
-		switch(field){
-			case 'name':
-				if(value.length > 5){
-					newFieldObj.valid = false;
-					newFieldObj.errorTips = "用户名最多4字符";
-				}else if(value.length == 0){
-					newFieldObj.valid = false;
-					newFieldObj.errorTips = "请输入用户名"
-				}
-				break;
-			case 'age':
-				if(value > 100 || value <= 0 || typeof value !== 'number'){
-					newFieldObj.valid = false;
-					newFieldObj.errorTips = "请输入1~100之间的数字";
-				}
-				break;
-			case 'gender':
-				if(!value){
-					newFieldObj.valid = false;
-					newFieldObj.errorTips = "请选择性别";
-				}
-				break;
-		}
-
-		this.setState({
-			form:{
-				...form,
-				[field]:newFieldObj
-			}
-			
-		});
-	}
-
 	handleSubmit(e){
 		e.preventDefault();
-		const {form:{name,age,gender}} = this.state;
-		if(!name.valid || !age.valid || !gender.valid){
-			alert("请输入正确的信息后重试");
-			return;
+		const {form:{name,age,gender},formValid} = this.props;
+		if(!formValid){
+			alert('请填写正确的信息后重试');
 		}
-		console.log(name);
+
 		fetch("http://localhost:3000/user",{
 			method:'post',
 			body:JSON.stringify({
-				name,
-				age,
-				gender
+				name:name.value,
+				age:age.value,
+				gender:gender.value
 			}),
 			headers:{
 				'Content-Type':'application/json'
 			}
 		})
-			.then((res) =>res.json())
-			.then((res) => {
-				if(res.id){
-					alert("添加成功");
-					this.setState({
-						name:'',
-						age:0,
-						gender:''
-					});
-				}else{
-					alert("添加失败");
-				}
-			})
-			.catch((err) => console.error(err));
+		.then((res)=>res.json())
+		.then((res)=>{
+			if(res.id){
+				alert("添加用户成功");
+			}else{
+				alert("添加失败");
+			}
+		})
+		.catch((err)=>console.log(err));
 
 	}
 
 	render(){
-		const {form:{name,age,gender}} = this.state;
+		const {form:{name,age,gender},onFormChange} = this.props;
+		console.log(this.props);
+		console.log(this.onFormChange)
 		return (
 			<div>
 				<header>
@@ -111,36 +45,66 @@ class UserAdd extends React.Component{
 				</header>
 				<main>
 					<form onSubmit={(e)=>this.handleSubmit(e)}>
-						<div>
-							<label>用户名：</label>
-							<input type="text" value={name.value} onChange={(e) =>this.handleValueChange('name',e.target.value)} />
-							{ !name.valid && <span>{name.errorTips}</span>}
-						</div>
-						<div>
-							<label>年龄：</label>
-							<input type="text" value={age.value || ''} onChange={e => this.handleValueChange('age',e.target.value)} />
-							{ !age.valid && <span>{age.errorTips}</span>}
-						</div>
-						<div>
-							<label>性别：</label>
-							<select value={gender.value} onChange={(e) => this.handleValueChange('gender',e.target.value)}>
-								<option value="">请选择</option>
+						<FormItem label="用户名：" valid={name.valid} error={name.error}>
+							<input type="text" value={name.value} onChange={(e)=>onFormChange('name',e.target.value)} />
+						</FormItem>
+						<FormItem label="年龄：" valid={age.valid} error={age.error}>
+							<input type="text" value={age.value || ''} onChange={(e)=>onFormChange('age',+e.target.value)} />
+						</FormItem>
+						<FormItem label="性别：" valid={gender.valid} error={gender.valid}>
+							<select value={gender.value} onChange={(e)=>onFormChange('gender',e.target.value)}>
+								<option>请选择性别</option>
 								<option value="male">男</option>
 								<option value="female">女</option>
 							</select>
-							
-							{ !gender.valid && <span>{gender.errorTips}</span>}
-							
-							
-						</div>
-						<div>
-							<input type="submit" value="提交" />
-						</div>
+						</FormItem>
+						<input type="submit" value="提交" />
 					</form>
 				</main>
 			</div>
 		);
 	}
+
 }
+
+UserAdd = formProvider({
+	name:{
+		defaultValue:'',
+		rules:[
+			{
+				pattern:function(value){
+					return value.length > 0;
+				},
+				error:'请输入用户名'
+			},
+			{
+				pattern:/^.{1,4}$/,
+				error:'用户名最多输入4个字符'
+			}
+		]
+	},
+	age:{
+		defaultValue:'',
+		rules:[
+			{
+				pattern:function(value){
+					return value >=1 && value <= 100 && (typeof value == 'number');
+				},
+				error:'请输入1~100的年龄'
+			}
+		]
+	},
+	gender:{
+		defaultValue:'',
+		rules:[
+			{
+				pattern:function(value){
+					return !!value;
+				},
+				error:'请选择性别'
+			}
+		]
+	}
+})(UserAdd);
 
 export default UserAdd;
