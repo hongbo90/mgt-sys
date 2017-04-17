@@ -26,6 +26,8 @@ class UserAdd extends React.Component{
 		.then((res)=>{
 			if(res.id){
 				alert("添加用户成功");
+				this.context.router.push('/user/list');
+				return;
 			}else{
 				alert("添加失败");
 			}
@@ -36,8 +38,6 @@ class UserAdd extends React.Component{
 
 	render(){
 		const {form:{name,age,gender},onFormChange} = this.props;
-		console.log(this.props);
-		console.log(this.onFormChange)
 		return (
 			<div>
 				<header>
@@ -66,6 +66,13 @@ class UserAdd extends React.Component{
 	}
 
 }
+
+
+// 必须给UserAdd定义一个包含router属性的contextTypes
+// 使得组件中可以通过this.context.router来使用React Router提供的方法
+UserAdd.contextTypes={
+	router:React.PropTypes.object.isRequired
+};
 
 UserAdd = formProvider({
 	name:{

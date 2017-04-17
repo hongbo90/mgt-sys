@@ -19,28 +19,22 @@
       "id": 10002
     },
     {
-      "name": {
-        "value": "asdf",
-        "valid": true,
-        "errorTips": ""
-      },
-      "age": {
-        "value": "asd",
-        "valid": true,
-        "errorTips": ""
-      },
-      "gender": {
-        "value": "male",
-        "valid": true,
-        "errorTips": ""
-      },
+      "name": "honb",
+      "age": 12,
+      "gender": "male",
       "id": 10003
     },
     {
-      "name": "",
-      "age": 0,
-      "gender": "",
+      "name": "t2",
+      "age": 28,
+      "gender": "male",
       "id": 10004
+    },
+    {
+      "name": "题",
+      "age": 22,
+      "gender": "male",
+      "id": 10005
     }
   ],
   "book": [
