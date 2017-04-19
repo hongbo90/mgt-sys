@@ -1,8 +1,16 @@
 import React from 'react';
 import FormItem from './FormItem';
 import formProvider from '../utils/formProvider';
+import AutoComplete from './AutoComplete';
 
 class BookEditor extends React.Component{
+
+	constructor(props){
+		super(props);
+		this.state = {
+			recommendUsers:[]
+		};
+	}
 
 	componentWillMount(){
 		const {editTarget,setFormValues} = this.props;
@@ -11,6 +19,48 @@ class BookEditor extends React.Component{
 		}
 		console.log(editTarget)
 	}
+
+	getRecommendUsers(partialUserId){
+		fetch("http://localhost:3000/user?id_like=" + partialUserId)
+			.then(res=>res.json())
+			.then((res)=>{
+				if(res.length == 1 && res[0].id == partialUserId){
+					return;
+				}
+				this.setState({
+					recommendUsers:res.map((user)=>{
+						return {
+							text:`${user.id}(${user.name})`,
+							value:user.id
+						}
+					})
+				})
+
+			});
+
+	}
+
+	timer = 0;
+
+	handleOwnerIdChange(value){
+		this.props.onFormChange('owner_id',value);
+		this.setState({
+			recommendUsers:[]
+		});
+
+		if(this.timer){
+			clearTimeout(this.timer);
+		}
+
+		if(value){
+			this.timer = setTimeout(()=>{
+				this.getRecommendUsers(value);
+				this.timer = 0;
+			},200)
+		}
+
+	}
+
 
 	handleSubmit(e){
 		e.preventDefault();
@@ -54,6 +104,7 @@ class BookEditor extends React.Component{
 	}
 
 	render(){
+		const {recommendUsers} = this.state;
 		const {form:{name,price,owner_id},onFormChange} = this.props;
 		return (
 			<form onSubmit={(e)=>this.handleSubmit(e)}>
@@ -64,9 +115,13 @@ class BookEditor extends React.Component{
 					<input type="text" value={price.value} onChange={(e)=>onFormChange('price',e.target.value)}  />
 				</FormItem>
 				<FormItem label="拥有者" valid={owner_id.valid} error={owner_id.error}>
-					<input type="text" value={owner_id.value} onChange={(e)=>onFormChange('owner_id',e.target.value)}  />
+					<AutoComplete 
+						value={owner_id.value ? owner_id.value : ''}
+						options={recommendUsers}
+						onValueChange={(value)=>this.handleOwnerIdChange(value)}
+					/>
 				</FormItem>
-				<FormItem label="提交">
+				<FormItem label="">
 					<input type="submit" value="提交"/>
 				</FormItem>
 			</form>
