@@ -68,7 +68,6 @@ function formProvider(fields){
 				}
 
 				const newForm = {...form,[fieldName]:newFieldState};
-				console.log(newForm);
 				const formValid = Object.values(newForm).every(f => f.valid);
 
 				this.setState({

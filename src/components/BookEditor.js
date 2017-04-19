@@ -2,6 +2,7 @@ import React from 'react';
 import FormItem from './FormItem';
 import formProvider from '../utils/formProvider';
 import AutoComplete from './AutoComplete';
+import request, {get} from '../utils/request';
 
 class BookEditor extends React.Component{
 
@@ -21,8 +22,7 @@ class BookEditor extends React.Component{
 	}
 
 	getRecommendUsers(partialUserId){
-		fetch("http://localhost:3000/user?id_like=" + partialUserId)
-			.then(res=>res.json())
+		get("http://localhost:3000/user?id_like=" + partialUserId)
 			.then((res)=>{
 				if(res.length == 1 && res[0].id == partialUserId){
 					return;
@@ -77,18 +77,11 @@ class BookEditor extends React.Component{
 			editType = "编辑";
 			apiUrl = apiUrl + "/" + editTarget.id;
 		}
-		fetch(apiUrl,{
-			method:method,
-			body:JSON.stringify({
+		request(method, apiUrl,{
 				name:name.value,
 				price:price.value,
-				owner_id:owner_id.value
-			}),
-			headers:{
-				'Content-Type':'application/json'
-			}
+				owner_id:owner_id.value	
 		})
-		.then(res=>res.json())
 		.then(res=>{
 			if(res.id){
 				alert(editType + "Success");

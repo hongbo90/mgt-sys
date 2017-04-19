@@ -1,5 +1,6 @@
 import React from 'react';
 import HomeLayout from '../layout/HomeLayout';
+import {get,del} from '../utils/request';
 
 class BookList extends React.Component{
 
@@ -20,10 +21,9 @@ class BookList extends React.Component{
 			return;
 		}
 		let urlApi = "http://localhost:3000/book/" + book.id;
-		fetch(urlApi,{
-			method:'delete'
+		del(urlApi,{
+			id:book.id
 		})
-		.then(res=>res.json())
 		.then(res=>{
 			this.setState({
 				book:this.state.book.filter((item)=>{return item.id != book.id})
@@ -33,8 +33,7 @@ class BookList extends React.Component{
 
 	componentWillMount(){
 		const urlApi = "http://localhost:3000/book"
-		fetch(urlApi)
-			.then(res=>res.json())
+		get(urlApi)
 			.then((res)=>{
 				this.setState({
 					book:res

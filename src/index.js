@@ -8,7 +8,7 @@ import UserEdit from './pages/UserEdit';
 import BookAdd from './pages/BookAdd';
 import BookList from './pages/BookList';
 import BookEdit from './pages/BookEdit';
-
+import Login from './pages/Login';
 
 
 ReactDOM.render((
@@ -20,6 +20,7 @@ ReactDOM.render((
 		<Route path='/book/add' component={BookAdd} />
 		<Route path='/book/list' component={BookList} />
 		<Route path="/book/edit/:id" component={BookEdit} />
+		<Route path="/login" component={Login} />
 	</Router>),
 	document.getElementById('app')
 );

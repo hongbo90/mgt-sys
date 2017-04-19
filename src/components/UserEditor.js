@@ -2,6 +2,7 @@ import React from 'react';
 import formProvider from '../utils/formProvider';
 import FormItem from './FormItem';
 import HomeLayout from '../layout/HomeLayout';
+import request from '../utils/request';
 
 class UserEditor extends React.Component{
 
@@ -31,18 +32,11 @@ class UserEditor extends React.Component{
 			method = "put";
 		}
 
-		fetch(apiUrl,{
-			method:method,
-			body:JSON.stringify({
+		request(method, apiUrl, {
 				name:name.value,
 				age:age.value,
 				gender:gender.value
-			}),
-			headers:{
-				'Content-Type':'application/json'
-			}
 		})
-		.then((res)=>res.json())
 		.then((res)=>{
 			if(res.id){
 				alert(editType + "用户成功");

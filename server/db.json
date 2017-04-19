@@ -1,10 +1,10 @@
 {
   "user": [
     {
-      "id": 10000,
       "name": "一韬",
       "age": 25,
-      "gender": "male"
+      "gender": "female",
+      "id": 10000
     },
     {
       "id": 10001,
@@ -33,16 +33,10 @@
   ],
   "book": [
     {
-      "id": 10000,
       "name": "JavaScript从入门到精通",
       "price": 9990,
-      "owner_id": 10000
-    },
-    {
-      "name": "three bodies",
-      "price": "33",
-      "owner_id": "big liu",
-      "id": 10001
+      "owner_id": 10000,
+      "id": 10000
     }
   ]
 }
