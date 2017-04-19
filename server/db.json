@@ -13,28 +13,22 @@
       "gender": "female"
     },
     {
-      "name": "hongbo",
-      "age": "26",
+      "name": "H",
+      "age": 12,
       "gender": "male",
       "id": 10002
     },
     {
-      "name": "honb",
-      "age": 12,
-      "gender": "male",
+      "name": "H",
+      "age": 22,
+      "gender": "female",
       "id": 10003
     },
     {
-      "name": "t2",
-      "age": 28,
-      "gender": "male",
+      "name": "H",
+      "age": 11,
+      "gender": "female",
       "id": 10004
-    },
-    {
-      "name": "题",
-      "age": 22,
-      "gender": "male",
-      "id": 10005
     }
   ],
   "book": [
@@ -45,10 +39,10 @@
       "owner_id": 10000
     },
     {
-      "id": 10001,
-      "name": "Java从入门到放弃",
-      "price": 1990,
-      "owner_id": 10001
+      "name": "three bodies",
+      "price": "33",
+      "owner_id": "big liu",
+      "id": 10001
     }
   ]
 }
