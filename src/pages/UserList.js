@@ -49,7 +49,7 @@ class UserList extends React.Component{
 	render(){
 		const { userList } = this.state;
 		return (
-			<HomeLayout title="用户列表">
+			<div>
 				<main>
 					<table>
 						<thead>
@@ -78,7 +78,7 @@ class UserList extends React.Component{
 						</tbody>
 					</table>
 				</main>
-			</HomeLayout>
+			</div>
 		);
 	}
 }

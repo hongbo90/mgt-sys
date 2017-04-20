@@ -6,11 +6,9 @@ import style from '../styles/home-page.less';
 class Home extends React.Component{
 	render(){
 		return (
-			<HomeLayout title="Welcome">
-				<div className={style.welcome}>
+			<div className={style.welcome}>
 					Welcome
-				</div>
-			</HomeLayout>
+			</div>
 		);
 	}
 }

@@ -28,7 +28,6 @@ class BookEdit extends React.Component{
 		const {book} = this.state;
 
 		return (
-			<HomeLayout title="编辑图书">
 				<main>
 						
 				{ 
@@ -38,7 +37,6 @@ class BookEdit extends React.Component{
 
 					
 				</main>
-			</HomeLayout>
 		);
 	}
 }
