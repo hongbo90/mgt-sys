@@ -22,6 +22,7 @@ class BookEditor extends React.Component{
 		this.state = {
 			recommendUsers:[]
 		};
+		this.handleOwnerIdChange = this.handleOwnerIdChange.bind(this);
 	}
 
 	componentDidMount(){
@@ -53,7 +54,7 @@ class BookEditor extends React.Component{
 	timer = 0;
 
 	handleOwnerIdChange(value){
-		this.props.onFormChange('owner_id',value);
+		// this.props.onFormChange('owner_id',value);
 		this.setState({
 			recommendUsers:[]
 		});
@@ -147,7 +148,7 @@ class BookEditor extends React.Component{
 						})(<InputNumber />)
 					}
 				</FormItem>
-				<FormItem label="拥有者">
+				<FormItem label="拥有者" {...formLayout}>
 					{
 						getFieldDecorator('owner_id',{
 							rules:[

@@ -1,4 +1,5 @@
 import React from 'react';
+import {Input} from 'antd';
 import style from '../styles/auto-complete.less';
 
 function getItemValue(item){
@@ -10,6 +11,7 @@ class AutoComplete extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
+			show:false,
 			displayValue:'',
 			activeItemIndex:-1
 		}
@@ -22,7 +24,7 @@ class AutoComplete extends React.Component{
 			activeItemIndex:-1,
 			displayValue:''
 		});
-		this.props.onValueChange(value);
+		this.props.onChange(value);
 	}
 
 	handleKeyDown(e){
@@ -95,14 +97,19 @@ class AutoComplete extends React.Component{
 
 	render(){
 
-		const {displayValue,activeItemIndex} = this.state;
+		const {show, displayValue,activeItemIndex} = this.state;
 		const {value,options} = this.props;
 
 		return (
 			<div className={style.wrapper}>
-				<input value={displayValue || value} onChange={ e => this.handleChange(e.target.value)} onKeyDown={this.handleKeyDown} type="text" />
+				<input value={displayValue || value} 
+					onChange={ e => this.handleChange(e.target.value)} 
+					onKeyDown={this.handleKeyDown} 
+					onFocus={()=>this.setState({show:true})}
+					onBlur={()=>this.setState({show:false})}
+					type="text" />
 				{
-					options.length > 0 && (
+					show && options.length > 0 && (
 						<ul className={style.options} onMouseLeave={ this.handleLeave }>
 							{
 								options.map((item,index)=>{
@@ -125,9 +132,9 @@ class AutoComplete extends React.Component{
 }
 
 AutoComplete.propTypes = {
-	value:React.PropTypes.string.isRequired,
-	options:React.PropTypes.array.isRequired,
-	onValueChange:React.PropTypes.func.isRequired
+	value:React.PropTypes.any,
+	options:React.PropTypes.array,
+	onChange:React.PropTypes.func
 }
 
 export default AutoComplete;
